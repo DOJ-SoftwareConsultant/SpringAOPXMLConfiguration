@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+    http://www.springframework.org/schema/aop   
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      
+  
+    <!-- Component scaning from this base package -->
+<!-- 	<context:component-scan base-package="com.doj.spring"/>
+ -->
+ <aop:aspectj-autoproxy />  
+  
+<bean id="LoggingAspect" class="com.doj.spring.aop.LoggingAspect">   </bean>  
+<bean id="colleges" class="com.doj.spring.Colleges"></bean>
+<bean id="education" class="com.doj.spring.Education"></bean>  
+
+           
+<aop:config>  
+  <aop:aspect id="myaspect" ref="LoggingAspect" >  
+     <!-- @Before -->  
+     <aop:pointcut id="pointCutBeforeEducation"   expression="execution(* com.doj.spring.Education.courseDetails(..))" />  
+     <aop:before method="myEducationAspectStart" pointcut-ref="pointCutBeforeEducation" />  
+     
+     <aop:pointcut expression="execution(* com.doj.spring.Education.courseDetails(..))" id="pointCutAfterEducation"/>
+     <aop:after method="myEducationAspectEnd" pointcut-ref="pointCutAfterEducation"/>
+     
+     <aop:pointcut expression="execution(* com.doj.spring.Colleges.collegeDetails(..))" id="pointCutBeforeColleges"/>
+     <aop:before method="myCollegesAspectStart" pointcut-ref="pointCutBeforeColleges"/>
+     
+     <aop:pointcut expression="execution(* com.doj.spring.Colleges.collegeDetails(..))" id="pointCutAfterColleges"/>
+     <aop:after method="myCollegesAspectEnd" pointcut-ref="pointCutAfterColleges"/>
+  </aop:aspect>  
+</aop:config>  
+      
+</beans>  
+	
+	
